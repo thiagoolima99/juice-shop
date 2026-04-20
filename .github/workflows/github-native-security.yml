@@ -2,7 +2,7 @@ name: GitHub Native Security
 
 on:
   push:
-    branches: [experiment/github-native-security]
+    branches: [test/github-security]
   pull_request:
     branches: [master]
 
