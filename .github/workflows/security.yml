@@ -1,12 +1,3 @@
-# =============================================================================
-# Security Pipeline — OWASP Juice Shop (Node.js/TypeScript)
-# =============================================================================
-# This workflow calls the centralized reusable security workflow.
-# Repository: YOUR_GITHUB_USERNAME/devsecops-central
-#
-# Replace YOUR_GITHUB_USERNAME with your actual GitHub username in the `uses` field.
-# =============================================================================
-
 name: Security CI
 
 on:
@@ -14,28 +5,11 @@ on:
     branches: [main, master, develop]
   pull_request:
     branches: [main, master, develop]
-  schedule:
-    # Full security scan every Monday at 07:00 UTC
-    - cron: "0 7 * * 1"
-  workflow_dispatch:
-    inputs:
-      fail-on-high:
-        description: "Fail pipeline on HIGH/CRITICAL findings"
-        type: boolean
-        default: true
 
 jobs:
-  security:
-    name: Node.js/TypeScript Security
-    uses: thiagoolima99/secCentralLayer/.github/workflows/reusable-nodejs-security.yml@main
-    with:
-      node-version: "20"
-      fail-on-high: ${{ github.event_name != 'schedule' && (github.event.inputs.fail-on-high != 'false') }}
-      # Juice Shop uses multiple security-relevant rulesets
-      semgrep-rules: "p/javascript p/typescript p/nodejs p/owasp-top-ten p/secrets p/xss p/sql-injection"
-      working-directory: "."
+  secrets:
+    name: Secret Scanning
+    uses: thiagoolima99/repo-central/.github/workflows/reusable-gitleaks.yml@main
     secrets: inherit
     permissions:
       contents: read
-      security-events: write  # Required for SARIF upload to GitHub Security tab
-      pull-requests: write    # Required for PR comments
