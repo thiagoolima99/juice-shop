@@ -7,9 +7,11 @@ on:
     branches: [main, master, develop]
 
 jobs:
-  secrets:
-    name: Secret Scanning
-    uses: thiagoolima99/repo-central/.github/workflows/reusable-gitleaks.yml@main
+  security:
+    name: Node.js Security
+    uses: thiagoolima99/repo-central/.github/workflows/reusable-nodejs-security.yml@main
+    with:
+      fail-on-high: true
     secrets: inherit
     permissions:
       contents: read
